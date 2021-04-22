@@ -10,6 +10,8 @@
 #   SASL username
 # @param sasl_password
 #   SASL password
+# @param sasl_password_file
+#   SASL password file
 # @param role
 #   Listener role
 # @param ssl_profile
@@ -25,11 +27,28 @@ define qpid::router::connector(
   Optional[String] $sasl_mech = 'ANONYMOUS',
   Optional[String] $sasl_username = undef,
   Optional[String] $sasl_password = undef,
+  Stdlib::Absolutepath $sasl_password_file = '/etc/qpid-dispatch/connector_pw.conf',
   Optional[Enum['normal', 'inter-router', 'route-container']] $role = undef,
   Optional[String] $ssl_profile = undef,
   Optional[Integer[0]] $idle_timeout = undef,
   String $config_file = $qpid::router::config_file,
 ){
+
+  if $sasl_password {
+    include qpid::params
+
+    file { $sasl_password_file:
+      ensure  => file,
+      owner   => 'root',
+      group   => $qpid::params::group,
+      mode    => '0640',
+      content => $sasl_password,
+    }
+  } else {
+    file { $sasl_password_file:
+      ensure => absent,
+    }
+  }
 
   concat::fragment {"qdrouter+connector_${name}.conf":
     target  => $config_file,

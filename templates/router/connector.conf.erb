@@ -7,7 +7,7 @@ connector {
     sasl-username: <%= @sasl_username %>
 <% end -%>
 <% unless [nil, :undefined, :undef, ''].include?(@sasl_password) -%>
-    sasl-password: <%= @sasl_password %>
+    sasl-password: <%= @sasl_password_file %>
 <% end -%>
 <% unless [nil, :undefined, :undef, ''].include?(@role) -%>
     role: <%= @role %>
