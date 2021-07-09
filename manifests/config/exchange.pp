@@ -14,7 +14,7 @@
 #   An optional username to pass in. This is mostly relevant when a SASL mechanism is passed
 # @param sasl_mechanism
 #   Select a SASL mechanism, like EXTERNAL
-define qpid::config::exchange(
+define qpid::config::exchange (
   $exchange = $title,
   $hostname = undef,
   $port = undef,
@@ -22,8 +22,7 @@ define qpid::config::exchange(
   $ssl_key = undef,
   Optional[String] $username = undef,
   Optional[String] $sasl_mechanism = undef,
-)
-{
+) {
   qpid::config_cmd { "ensure exchange ${exchange}":
     command        => "add exchange topic ${exchange} --durable",
     unless         => "exchanges ${exchange}",

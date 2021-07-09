@@ -16,7 +16,7 @@
 #   An optional username to pass in. This is mostly relevant when a SASL mechanism is passed
 # @param sasl_mechanism
 #   Select a SASL mechanism, like EXTERNAL
-define qpid::config::bind(
+define qpid::config::bind (
   $queue,
   $exchange,
   $hostname = undef,
@@ -25,8 +25,7 @@ define qpid::config::bind(
   $ssl_key = undef,
   Optional[String] $username = undef,
   Optional[String] $sasl_mechanism = undef,
-)
-{
+) {
   $cmd = "bind queue to exchange and filter messages that deal with ${title}"
   qpid::config_cmd { $cmd:
     command        => "bind ${exchange} ${queue} ${title}",

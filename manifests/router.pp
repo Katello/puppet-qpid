@@ -23,7 +23,7 @@
 # @param ensure
 #   Specify to explicitly enable Qpid Dispatch installs or absent to remove all packages and configs
 #
-class qpid::router(
+class qpid::router (
   String $router_id = $qpid::router::params::router_id,
   String $mode = 'interior',
   Stdlib::AbsolutePath $config_file = '/etc/qpid-dispatch/qdrouterd.conf',
@@ -36,11 +36,9 @@ class qpid::router(
   Optional[Boolean] $service_enable = undef,
   Enum['present', 'absent'] $ensure = 'present',
 ) inherits qpid::router::params {
-
   contain qpid::router::install
   contain qpid::router::config
   contain qpid::router::service
 
   Class['qpid::router::install'] -> Class['qpid::router::config'] ~> Class['qpid::router::service']
-
 }

@@ -1,19 +1,19 @@
 require 'spec_helper'
 
 describe 'qpid::config_cmd' do
-  let (:title) { 'test' }
+  let(:title) { 'test' }
 
   on_supported_os.each do |os, facts|
     context "on #{os}" do
-      let (:facts) { facts }
+      let(:facts) { facts }
 
       [true, false].each do |qpid|
         context "qpid => #{qpid}" do
-          context "with unless" do
+          context 'with unless' do
             let :params do
               {
-                'command' => "add exchange topic myexchange --durable",
-                'unless'  => "exchanges myexchange",
+                'command' => 'add exchange topic myexchange --durable',
+                'unless'  => 'exchanges myexchange',
               }
             end
 
@@ -21,6 +21,7 @@ describe 'qpid::config_cmd' do
               let :pre_condition do
                 'include qpid'
               end
+
             end
 
             it do
@@ -51,11 +52,11 @@ describe 'qpid::config_cmd' do
             end
           end
 
-          context "with onlyif" do
+          context 'with onlyif' do
             let :params do
               {
-                'command' => "bind myexchange myqueue *.*",
-                'onlyif'  => "exchanges myexchange -r | grep *.*",
+                'command' => 'bind myexchange myqueue *.*',
+                'onlyif'  => 'exchanges myexchange -r | grep *.*',
               }
             end
 
@@ -63,6 +64,7 @@ describe 'qpid::config_cmd' do
               let :pre_condition do
                 'include qpid'
               end
+
             end
 
             it do
@@ -92,7 +94,7 @@ describe 'qpid::config_cmd' do
           }
         end
 
-        it { is_expected.to compile.and_raise_error(/Either \$onlyif or \$unless must be specified/) }
+        it { is_expected.to compile.and_raise_error(%r{Either \$onlyif or \$unless must be specified}) }
       end
 
       context 'with SSL' do
@@ -131,7 +133,7 @@ describe 'qpid::config_cmd' do
           }
         end
 
-        it { is_expected.to compile.and_raise_error(/When using SSL both, \$ssl_cert and \$ssl_key must be specified/) }
+        it { is_expected.to compile.and_raise_error(%r{When using SSL both, \$ssl_cert and \$ssl_key must be specified}) }
       end
 
       context 'with only $ssl_key' do
@@ -143,7 +145,7 @@ describe 'qpid::config_cmd' do
           }
         end
 
-        it { is_expected.to compile.and_raise_error(/When using SSL both, \$ssl_cert and \$ssl_key must be specified/) }
+        it { is_expected.to compile.and_raise_error(%r{When using SSL both, \$ssl_cert and \$ssl_key must be specified}) }
       end
     end
   end

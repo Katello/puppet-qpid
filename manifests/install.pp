@@ -2,7 +2,6 @@
 #
 # @api private
 class qpid::install {
-
   if $qpid::ensure == 'absent' {
     $_package_ensure = 'purged'
   } else {

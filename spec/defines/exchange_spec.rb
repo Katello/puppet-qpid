@@ -20,8 +20,6 @@ describe 'qpid::config::exchange' do
   end
 
   context 'with ssl_cert' do
-    it { is_expected.to compile.with_all_deps }
-
     let :params do
       {
         'hostname' => 'myhost.example.com',
@@ -30,6 +28,8 @@ describe 'qpid::config::exchange' do
         'ssl_key'  => '/path/to/key.pem',
       }
     end
+
+    it { is_expected.to compile.with_all_deps }
 
     it do
       is_expected.to contain_qpid__config_cmd('ensure exchange event')

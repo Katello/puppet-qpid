@@ -15,7 +15,7 @@
 # @param config_file
 #   The config file to use. This is an advanced parameter and normally doesn't
 #   need to be set.
-define qpid::router::ssl_profile(
+define qpid::router::ssl_profile (
   Stdlib::Absolutepath $ca,
   Stdlib::Absolutepath $cert,
   Stdlib::Absolutepath $key,
@@ -24,7 +24,7 @@ define qpid::router::ssl_profile(
   Optional[String] $password = undef,
   String $config_file = $qpid::router::config_file,
 ) {
-  concat::fragment {"qdrouter+ssl_${title}.conf":
+  concat::fragment { "qdrouter+ssl_${title}.conf":
     target  => $config_file,
     content => template('qpid/router/ssl_profile.conf.erb'),
     order   => '02',

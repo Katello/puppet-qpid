@@ -1,9 +1,7 @@
 # Handles Qpid configuration
 #
 # @api private
-class qpid::config
-{
-
+class qpid::config {
   user { $qpid::user:
     ensure => $qpid::ensure,
     groups => $qpid::user_groups,

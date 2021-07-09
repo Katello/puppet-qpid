@@ -17,7 +17,7 @@
 #   The name to use inside the certificate database
 # @param client_packages
 #   Packages to install
-class qpid::client(
+class qpid::client (
   String $version = $qpid::client::params::version,
   Stdlib::Absolutepath $config_file = $qpid::client::params::config_file,
   String $log_level = $qpid::client::params::log_level,
@@ -28,7 +28,6 @@ class qpid::client(
   Optional[String] $ssl_cert_name = $qpid::client::params::ssl_cert_name,
   Array[String] $client_packages = $qpid::client::params::client_packages,
 ) inherits qpid::client::params {
-
   package { $client_packages:
     ensure => $version,
   } ->
@@ -39,5 +38,4 @@ class qpid::client(
     group   => 'root',
     mode    => '0644',
   }
-
 }

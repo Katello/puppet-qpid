@@ -21,39 +21,39 @@ describe 'qpid::router::ssl_profile' do
     it { is_expected.to compile.with_all_deps }
     it do
       verify_concat_fragment_exact_contents(catalogue, 'qdrouter+ssl_example.conf', [
-        'ssl-profile {',
-        '    name: example',
-        '    ca-cert-file: /ca.pem',
-        '    cert-file: /cert.pem',
-        '    private-key-file: /key.pem',
-        '}',
-      ])
+                                              'ssl-profile {',
+                                              '    name: example',
+                                              '    ca-cert-file: /ca.pem',
+                                              '    cert-file: /cert.pem',
+                                              '    private-key-file: /key.pem',
+                                              '}',
+                                            ],)
     end
   end
 
   context 'with ssl profile' do
     let(:params) do
       super().merge(
-        ca: "/some/where/ca.pem",
-        cert: "/some/where/cert.pem",
-        key: "/some/where/key.pem",
-        ciphers: "ALL:!aNULL:!MD5:!DSS",
-        protocols: ["TLSv1.1", "TLSv1.2"],
+        ca: '/some/where/ca.pem',
+        cert: '/some/where/cert.pem',
+        key: '/some/where/key.pem',
+        ciphers: 'ALL:!aNULL:!MD5:!DSS',
+        protocols: ['TLSv1.1', 'TLSv1.2'],
       )
     end
 
     it { is_expected.to compile.with_all_deps }
-    it 'should have ssl fragment' do
+    it 'has ssl fragment' do
       verify_concat_fragment_exact_contents(catalogue, 'qdrouter+ssl_example.conf', [
-        'ssl-profile {',
-        '    name: example',
-        '    ca-cert-file: /some/where/ca.pem',
-        '    cert-file: /some/where/cert.pem',
-        '    private-key-file: /some/where/key.pem',
-        '    ciphers: ALL:!aNULL:!MD5:!DSS',
-        '    protocols: TLSv1.1 TLSv1.2',
-        '}'
-      ])
+                                              'ssl-profile {',
+                                              '    name: example',
+                                              '    ca-cert-file: /some/where/ca.pem',
+                                              '    cert-file: /some/where/cert.pem',
+                                              '    private-key-file: /some/where/key.pem',
+                                              '    ciphers: ALL:!aNULL:!MD5:!DSS',
+                                              '    protocols: TLSv1.1 TLSv1.2',
+                                              '}'
+                                            ],)
     end
   end
 
@@ -70,14 +70,14 @@ describe 'qpid::router::ssl_profile' do
     it { is_expected.to compile.with_all_deps }
     it do
       verify_concat_fragment_exact_contents(catalogue, 'qdrouter+ssl_example.conf', [
-        'ssl-profile {',
-        '    name: example',
-        '    ca-cert-file: /ca.pem',
-        '    cert-file: /cert.pem',
-        '    private-key-file: /key.pem',
-        '    password: secret',
-        '}',
-      ])
+                                              'ssl-profile {',
+                                              '    name: example',
+                                              '    ca-cert-file: /ca.pem',
+                                              '    cert-file: /cert.pem',
+                                              '    private-key-file: /key.pem',
+                                              '    password: secret',
+                                              '}',
+                                            ],)
     end
   end
 end

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe 'qpid::tools' do
-  on_supported_os.each do |os, facts|
+  on_supported_os.each do |_os, facts|
     context 'on redhat' do
       let :facts do
         facts

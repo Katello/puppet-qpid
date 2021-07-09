@@ -2,7 +2,6 @@
 #
 # @api private
 class qpid::service {
-
   if $qpid::ensure == 'absent' {
     $_service_ensure = false
     $_service_enable = false
@@ -21,10 +20,10 @@ class qpid::service {
   if $facts['systemd'] {
     if $qpid::open_file_limit and $qpid::ensure == 'present' {
       $ensure_limit = 'present'
-      $limits = {'LimitNOFILE' => $qpid::open_file_limit}
+      $limits = { 'LimitNOFILE' => $qpid::open_file_limit }
     } else {
       $ensure_limit = 'absent'
-      $limits = {'LimitNOFILE' => 1} # https://github.com/camptocamp/puppet-systemd/pull/80
+      $limits = { 'LimitNOFILE' => 1 } # https://github.com/camptocamp/puppet-systemd/pull/80
     }
 
     systemd::service_limits { 'qpidd.service':

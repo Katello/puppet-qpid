@@ -10,23 +10,23 @@ describe 'qpid' do
         it { is_expected.to compile.with_all_deps }
 
         it { is_expected.to contain_class('qpid::install') }
-        it 'should install message store by default' do
+        it 'installs message store by default' do
           is_expected.to contain_package('qpid-cpp-server-linearstore')
             .that_comes_before(['Service[qpidd]'])
         end
 
         it { is_expected.to contain_class('qpid::config') }
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no'
+                                ],)
         end
 
         it { is_expected.to contain_class('qpid::service') }
-        it 'should configure systemd' do
+        it 'configures systemd' do
           is_expected.to contain_systemd__service_limits('qpidd.service')
             .with_ensure('absent')
             .that_notifies('Service[qpidd]')
@@ -43,10 +43,10 @@ describe 'qpid' do
             auth: true,
             ssl: true,
             ssl_port: 5671,
-            ssl_cert_db: "/etc/pki/katello/nssdb",
-            ssl_cert_password_file: "/etc/pki/katello/nssdb/nss_db_password-file",
-            ssl_cert_name: "broker",
-            ssl_require_client_auth: true
+            ssl_cert_db: '/etc/pki/katello/nssdb',
+            ssl_cert_password_file: '/etc/pki/katello/nssdb/nss_db_password-file',
+            ssl_cert_name: 'broker',
+            ssl_require_client_auth: true,
 
           )
         end
@@ -71,7 +71,7 @@ describe 'qpid' do
         it { is_expected.to contain_systemd__dropin_file('wait-for-port.conf').with_ensure('absent') }
         it { is_expected.to contain_systemd__service_limits('qpidd.service').with_ensure('absent') }
         it { is_expected.not_to contain_package('iproute') }
-        it 'should disable qpidd' do
+        it 'disables qpidd' do
           is_expected.to contain_service('qpidd')
             .with_ensure('false')
             .with_enable('false')
@@ -83,7 +83,7 @@ describe 'qpid' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it 'should disable qpidd' do
+        it 'disables qpidd' do
           is_expected.to contain_service('qpidd')
             .with_ensure('false')
             .with_enable('false')
@@ -95,7 +95,7 @@ describe 'qpid' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it 'should configure systemd' do
+        it 'configures systemd' do
           is_expected.to contain_systemd__service_limits('qpidd.service')
             .with_ensure('present')
             .with_limits('LimitNOFILE' => 100)
@@ -113,39 +113,39 @@ describe 'qpid' do
       context 'with interface' do
         let(:params) { super().merge(interface: 'lo') }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'interface=lo'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'interface=lo'
+                                ],)
         end
       end
 
       context 'with ACL file' do
         let :params do
           super().merge(
-            acl_file: "/etc/qpid/qpid.acl",
-            acl_content: "allow all all"
+            acl_file: '/etc/qpid/qpid.acl',
+            acl_content: 'allow all all',
           )
         end
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'acl-file=/etc/qpid/qpid.acl',
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-          ])
+                                  'acl-file=/etc/qpid/qpid.acl',
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                ],)
         end
 
-        it 'should create ACL file' do
+        it 'creates ACL file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpid.acl', [
-            'allow all all',
-          ])
+                                  'allow all all',
+                                ],)
         end
       end
 
@@ -154,29 +154,29 @@ describe 'qpid' do
           super().merge(
             ssl: true,
             ssl_port: 5671,
-            ssl_cert_db: "/etc/pki/katello/nssdb",
-            ssl_cert_password_file: "/etc/pki/katello/nssdb/nss_db_password-file",
-            ssl_cert_name: "broker",
-            ssl_require_client_auth: true
+            ssl_cert_db: '/etc/pki/katello/nssdb',
+            ssl_cert_password_file: '/etc/pki/katello/nssdb/nss_db_password-file',
+            ssl_cert_name: 'broker',
+            ssl_require_client_auth: true,
           )
         end
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'require-encryption=yes',
-            'ssl-require-client-authentication=yes',
-            'ssl-port=5671',
-            'ssl-cert-db=/etc/pki/katello/nssdb',
-            'ssl-cert-password-file=/etc/pki/katello/nssdb/nss_db_password-file',
-            'ssl-cert-name=broker'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'require-encryption=yes',
+                                  'ssl-require-client-authentication=yes',
+                                  'ssl-port=5671',
+                                  'ssl-cert-db=/etc/pki/katello/nssdb',
+                                  'ssl-cert-password-file=/etc/pki/katello/nssdb/nss_db_password-file',
+                                  'ssl-cert-name=broker'
+                                ],)
         end
 
-        it 'should configure systemd to wait for the ssl port to be open' do
+        it 'configures systemd to wait for the ssl port to be open' do
           is_expected.to contain_systemd__dropin_file('wait-for-port.conf')
             .with_ensure('present')
             .that_notifies('Service[qpidd]')
@@ -184,65 +184,65 @@ describe 'qpid' do
           is_expected.to contain_package('iproute')
             .with_ensure('present')
           verify_exact_contents(catalogue, '/etc/systemd/system/qpidd.service.d/wait-for-port.conf', [
-            "[Service]",
-            "ExecStartPost=/bin/bash -c 'while ! ss --no-header --tcp --listening --numeric sport = :5671 | grep -q \"^LISTEN.*:5671\"; do sleep 1; done'"
-          ])
+                                  '[Service]',
+                                  "ExecStartPost=/bin/bash -c 'while ! ss --no-header --tcp --listening --numeric sport = :5671 | grep -q \"^LISTEN.*:5671\"; do sleep 1; done'"
+                                ],)
         end
       end
 
       context 'with session-max-unacked' do
         let(:params) { super().merge(session_unacked: 10) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'session-max-unacked=10'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'session-max-unacked=10'
+                                ],)
         end
       end
 
       context 'with mgmt-pub-interval' do
         let(:params) { super().merge(mgmt_pub_interval: 4) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'mgmt-pub-interval=4'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'mgmt-pub-interval=4'
+                                ],)
         end
       end
 
       context 'with wcache_page_size' do
         let(:params) { super().merge(wcache_page_size: 4) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'wcache-page-size=4'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'wcache-page-size=4'
+                                ],)
         end
       end
 
       context 'with default_queue_limit' do
-        let(:params) { super().merge(default_queue_limit: 10000) }
+        let(:params) { super().merge(default_queue_limit: 10_000) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'default-queue-limit=10000'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'default-queue-limit=10000'
+                                ],)
         end
       end
 
@@ -258,44 +258,44 @@ describe 'qpid' do
           PUPPET
         end
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'efp-file-size=512',
-            'log-to-file=/tmp/qpidd.log',
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'efp-file-size=512',
+                                  'log-to-file=/tmp/qpidd.log',
+                                ],)
         end
       end
 
       context 'with max-connections' do
         let(:params) { super().merge(max_connections: 2000) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=no',
-            'max-connections=2000'
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=no',
+                                  'max-connections=2000'
+                                ],)
         end
       end
 
       context 'with auth' do
         let(:params) { super().merge(auth: true) }
 
-        it 'should create configuration file' do
+        it 'creates configuration file' do
           verify_exact_contents(catalogue, '/etc/qpid/qpidd.conf', [
-            'data-dir=/var/lib/qpidd',
-            'log-enable=error+',
-            'log-to-syslog=yes',
-            'auth=yes',
-          ])
+                                  'data-dir=/var/lib/qpidd',
+                                  'log-enable=error+',
+                                  'log-to-syslog=yes',
+                                  'auth=yes',
+                                ],)
         end
-        it 'should install cyrus-sasl-plain' do
+        it 'installs cyrus-sasl-plain' do
           is_expected.to contain_package('cyrus-sasl-plain')
         end
       end

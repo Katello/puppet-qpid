@@ -15,7 +15,7 @@
 #   The target for the concat fragment. Inherited from the main config so
 #   usually not to be touched.
 #   Timeout in seconds
-define qpid::router::listener(
+define qpid::router::listener (
   Optional[String] $ssl_profile = undef,
   Optional[String] $host = undef,
   Integer[0, 65535] $port = 5672,
@@ -23,12 +23,10 @@ define qpid::router::listener(
   Optional[Enum['normal', 'inter-router', 'route-container']] $role = undef,
   Optional[Integer[0]] $idle_timeout = undef,
   String $config_file = $qpid::router::config_file,
-){
-
-  concat::fragment {"qdrouter+listener_${title}.conf":
+) {
+  concat::fragment { "qdrouter+listener_${title}.conf":
     target  => $config_file,
     content => template('qpid/router/listener.conf.erb'),
     order   => '05',
   }
-
 }

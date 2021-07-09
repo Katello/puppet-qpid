@@ -14,57 +14,57 @@ describe 'qpid::router::log' do
       it { is_expected.to compile.with_all_deps }
       it do
         verify_concat_fragment_exact_contents(catalogue, 'qdrouter+log_example.conf', [
-          'log {',
-          '    module: DEFAULT',
-          '    enable: info+',
-          '    include-timestamp: true',
-          '    output-file: /var/log/qdrouterd.log',
-          '}',
-        ])
+                                                'log {',
+                                                '    module: DEFAULT',
+                                                '    enable: info+',
+                                                '    include-timestamp: true',
+                                                '    output-file: /var/log/qdrouterd.log',
+                                                '}',
+                                              ],)
       end
     end
 
     context 'with logging to file' do
       let :params do
         super().merge(
-          module: "DEFAULT",
-          level: "debug+",
+          module: 'DEFAULT',
+          level: 'debug+',
           timestamp: false,
-          output: "/var/log/qpid.log",
+          output: '/var/log/qpid.log',
         )
       end
 
-      it 'should have log fragment' do
+      it 'has log fragment' do
         verify_concat_fragment_exact_contents(catalogue, 'qdrouter+log_example.conf', [
-          'log {',
-          '    module: DEFAULT',
-          '    enable: debug+',
-          '    include-timestamp: false',
-          '    output-file: /var/log/qpid.log',
-          '}'
-        ])
+                                                'log {',
+                                                '    module: DEFAULT',
+                                                '    enable: debug+',
+                                                '    include-timestamp: false',
+                                                '    output-file: /var/log/qpid.log',
+                                                '}'
+                                              ],)
       end
     end
 
     context 'with logging to syslog' do
       let :params do
         super().merge(
-          module: "DEFAULT",
-          level: "debug+",
+          module: 'DEFAULT',
+          level: 'debug+',
           timestamp: false,
-          output: "syslog",
+          output: 'syslog',
         )
       end
 
-      it 'should have log fragment' do
+      it 'has log fragment' do
         verify_concat_fragment_exact_contents(catalogue, 'qdrouter+log_example.conf', [
-          'log {',
-          '    module: DEFAULT',
-          '    enable: debug+',
-          '    include-timestamp: false',
-          '    output-file: syslog',
-          '}'
-        ])
+                                                'log {',
+                                                '    module: DEFAULT',
+                                                '    enable: debug+',
+                                                '    include-timestamp: false',
+                                                '    output-file: syslog',
+                                                '}'
+                                              ],)
       end
     end
   end
@@ -79,13 +79,13 @@ describe 'qpid::router::log' do
 
         it do
           verify_concat_fragment_exact_contents(catalogue, 'qdrouter+log_example.conf', [
-            'log {',
-            '    module: DEFAULT',
-            '    enable: info+',
-            '    include-timestamp: true',
-            '    output-file: /var/log/qdrouterd.log',
-            '}',
-          ])
+                                                  'log {',
+                                                  '    module: DEFAULT',
+                                                  '    enable: info+',
+                                                  '    include-timestamp: true',
+                                                  '    output-file: /var/log/qdrouterd.log',
+                                                  '}',
+                                                ],)
         end
 
         it do

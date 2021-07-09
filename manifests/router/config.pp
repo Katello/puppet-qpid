@@ -2,14 +2,13 @@
 #
 # @api private
 class qpid::router::config {
-
-  concat::fragment {'qdrouter+header.conf':
+  concat::fragment { 'qdrouter+header.conf':
     target  => $qpid::router::config_file,
     content => template('qpid/router/header.conf.erb'),
     order   => '01',
   }
 
-  concat::fragment {'qdrouter+footer.conf':
+  concat::fragment { 'qdrouter+footer.conf':
     target  => $qpid::router::config_file,
     content => template('qpid/router/footer.conf.erb'),
     order   => '100',

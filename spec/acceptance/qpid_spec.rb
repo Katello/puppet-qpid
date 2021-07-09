@@ -1,6 +1,6 @@
 require 'spec_helper_acceptance'
 
-describe 'qpid', :order => :defined do
+describe 'qpid', order: :defined do
   context 'with default parameters' do
     it_behaves_like 'an idempotent resource' do
       let(:manifest) do

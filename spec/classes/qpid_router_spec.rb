@@ -5,7 +5,7 @@ describe 'qpid::router' do
   on_supported_os.each do |os, facts|
     context "on #{os}" do
       let :facts do
-        {processors: {'count' => 2}}.deep_merge(facts)
+        { processors: { 'count' => 2 } }.deep_merge(facts)
       end
 
       context 'without parameters' do
@@ -14,42 +14,42 @@ describe 'qpid::router' do
 
         it { is_expected.to contain_class('qpid::router::config').that_requires('Class[qpid::router::install]') }
 
-        it 'should have header fragment' do
+        it 'has header fragment' do
           verify_concat_fragment_exact_contents(catalogue, 'qdrouter+header.conf', [
-            'router {',
-            '    id: foo.example.com',
-            '    mode: interior',
-            '    worker-threads: 2',
-            '}'
-          ])
+                                                  'router {',
+                                                  '    id: foo.example.com',
+                                                  '    mode: interior',
+                                                  '    worker-threads: 2',
+                                                  '}'
+                                                ],)
         end
 
-        it 'should have footer fragment' do
+        it 'has footer fragment' do
           verify_concat_fragment_exact_contents(catalogue, 'qdrouter+footer.conf', [
-            'address {',
-            '    prefix: closest',
-            '    distribution: closest',
-            '}',
-            'address {',
-            '    prefix: multicast',
-            '    distribution: multicast',
-            '}',
-            'address {',
-            '    prefix: unicast',
-            '    distribution: closest',
-            '}',
-            'address {',
-            '    prefix: exclusive',
-            '    distribution: closest',
-            '}',
-            'address {',
-            '    prefix: broadcast',
-            '    distribution: multicast',
-            '}'
-          ])
+                                                  'address {',
+                                                  '    prefix: closest',
+                                                  '    distribution: closest',
+                                                  '}',
+                                                  'address {',
+                                                  '    prefix: multicast',
+                                                  '    distribution: multicast',
+                                                  '}',
+                                                  'address {',
+                                                  '    prefix: unicast',
+                                                  '    distribution: closest',
+                                                  '}',
+                                                  'address {',
+                                                  '    prefix: exclusive',
+                                                  '    distribution: closest',
+                                                  '}',
+                                                  'address {',
+                                                  '    prefix: broadcast',
+                                                  '    distribution: multicast',
+                                                  '}'
+                                                ],)
         end
 
-        it 'should configure qdrouter.conf' do
+        it 'configures qdrouter.conf' do
           is_expected.to contain_concat('/etc/qpid-dispatch/qdrouterd.conf')
             .with_owner('root')
             .with_group('root')
@@ -59,7 +59,7 @@ describe 'qpid::router' do
         end
 
         it { is_expected.to contain_class('qpid::router::service').that_subscribes_to('Class[qpid::router::config]') }
-        it 'should configure systemd' do
+        it 'configures systemd' do
           is_expected.to contain_systemd__service_limits('qdrouterd.service')
             .with_ensure('absent')
             .that_notifies('Service[qdrouterd]')
@@ -83,7 +83,7 @@ describe 'qpid::router' do
 
         it { is_expected.to contain_class('qpid::router::service') }
         it { is_expected.to contain_systemd__service_limits('qdrouterd.service').with_ensure('absent') }
-        it 'should disable qdrouterd' do
+        it 'disables qdrouterd' do
           is_expected.to contain_service('qdrouterd')
             .with_ensure('false')
             .with_enable('false')
@@ -99,7 +99,7 @@ describe 'qpid::router' do
 
         it { is_expected.to compile.with_all_deps }
 
-        it 'should disable qdrouterd' do
+        it 'disables qdrouterd' do
           is_expected.to contain_service('qdrouterd')
             .with_ensure('false')
             .with_enable('false')
@@ -114,30 +114,30 @@ describe 'qpid::router' do
           }
         end
 
-        it 'should change header.conf' do
+        it 'changes header.conf' do
           verify_concat_fragment_exact_contents(catalogue, 'qdrouter+header.conf', [
-            'router {',
-            '    id: foo.example.com',
-            '    mode: interior',
-            '    worker-threads: 2',
-            '    helloInterval: 10',
-            '    helloMaxAge: 30',
-            '}'
-          ])
+                                                  'router {',
+                                                  '    id: foo.example.com',
+                                                  '    mode: interior',
+                                                  '    worker-threads: 2',
+                                                  '    helloInterval: 10',
+                                                  '    helloMaxAge: 30',
+                                                  '}'
+                                                ],)
         end
       end
 
       context 'with open files limit' do
         let :params do
           {
-            open_file_limit: 10000,
+            open_file_limit: 10_000,
           }
         end
 
-        it 'should configure systemd' do
+        it 'configures systemd' do
           is_expected.to contain_systemd__service_limits('qdrouterd.service')
             .with_ensure('present')
-            .with_limits({'LimitNOFILE' => 10000})
+            .with_limits({ 'LimitNOFILE' => 10_000 })
         end
       end
 
@@ -148,14 +148,14 @@ describe 'qpid::router' do
           }
         end
 
-        it 'should have header fragment' do
+        it 'has header fragment' do
           verify_concat_fragment_exact_contents(catalogue, 'qdrouter+header.conf', [
-            'router {',
-            '    id: foo.example.com',
-            '    mode: standalone',
-            '    worker-threads: 2',
-            '}'
-          ])
+                                                  'router {',
+                                                  '    id: foo.example.com',
+                                                  '    mode: standalone',
+                                                  '    worker-threads: 2',
+                                                  '}'
+                                                ],)
         end
       end
     end
